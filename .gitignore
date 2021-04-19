@@ -1,0 +1,8 @@
+
+KalahaApplication/.idea/
+
+KalahaApplication/out/
+
+*.iml
+
+KalahaApplication/src/META-INF/

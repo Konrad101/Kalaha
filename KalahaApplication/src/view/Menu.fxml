@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="700.0" style="-fx-background-color: #261B0F;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuController">
+   <center>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <VBox prefHeight="303.0" prefWidth="504.0" spacing="23.0">
+               <children>
+                  <MenuButton fx:id="stonesAmountButton" alignment="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="45.0" prefWidth="240.0" style="-fx-background-color: #e5a968;" stylesheets="@../styles/MenuButtonStyle.css" text="Stones amount: 4">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" right="5.0" top="45.0" />
+                     </VBox.margin>
+                  </MenuButton>
+                  <Button fx:id="compVsCompButton" mnemonicParsing="false" onAction="#computerVsComputer" prefHeight="45.0" prefWidth="240.0" style="-fx-background-color: #e5a968;" text="Computer vs Computer" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets left="10.0" right="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="userVsCompButton" mnemonicParsing="false" onAction="#userVsComputer" prefHeight="45.0" prefWidth="240.0" style="-fx-background-color: #e5a968;" text="User vs Computer" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" right="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="userVsUserButton" mnemonicParsing="false" onAction="#userVsUser" prefHeight="45.0" prefWidth="240.0" style="-fx-background-color: #e5a968;" text="User vs User" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" right="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <left>
+      <ImageView fx:id="leftImage" fitHeight="213.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../resources/prototype.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets left="20.0" top="30.0" />
+         </BorderPane.margin></ImageView>
+   </left>
+   <right>
+      <ImageView fx:id="rightImage" fitHeight="213.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../resources/prototype.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets bottom="110.0" right="20.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </right>
+   <top>
+      <AnchorPane fx:id="topAnchorPane" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="#e5a968" layoutX="243.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kalaha" wrappingWidth="213.1366971731186">
+               <font>
+                  <Font name="Segoe UI" size="73.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

@@ -1,0 +1,12 @@
+.bodybg{
+    -fx-background-image: url("/resources/wood.jpg");
+}
+
+.firstPlayerBg{
+    -fx-fill: url("/resources/PlayerOne.png");
+}
+
+.secondPlayerBg{
+    -fx-fill: url("/resources/PlayerTwo.png");
+}
+
