@@ -6,6 +6,8 @@ import model.botAlgorithm.IGameAlgorithm;
 import model.game.IEvaluate;
 import model.game.IGame;
 
+import java.util.Random;
+
 
 public class MiniMax<T extends IGame<T> & IEvaluate> implements IGameAlgorithm<T> {
     private int maxDepth = 13;
@@ -25,6 +27,10 @@ public class MiniMax<T extends IGame<T> & IEvaluate> implements IGameAlgorithm<T
 
     @Override
     public int findBestWay(T initialPosition, int playerNumber) {
+        if(initialPosition.isFirstMove()){
+            return 1 + new Random().nextInt(6);
+        }
+
         this.playerNumber = playerNumber;
         this.nextMoveNumber = -1;
         minimax(initialPosition,

@@ -10,7 +10,7 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
     private static final int DEFAULT_STONES_AMOUNT = 4;
 
     private final Board board;
-    private int lastMoveResult = -1;
+    private int lastMoveResult = 404;
     private int lastMoveHoleNumber = -1;
     private int lastHoleIndex;
 
@@ -166,6 +166,11 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
     @Override
     public boolean gameOver() {
         return this.checkStopCondition();
+    }
+
+    @Override
+    public boolean isFirstMove() {
+        return lastMoveResult == 404;
     }
 
     @Override
