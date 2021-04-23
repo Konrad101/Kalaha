@@ -1,14 +1,18 @@
-package controllers.gameOptions;
+package controllers.gameControllers.gameTypesControllers;
 
-import model.DecisionTree.DecisionTree;
+import controllers.gameControllers.ComputerGameController;
 import javafx.application.Platform;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.shape.Circle;
+import model.botAlgorithm.AlgorithmProvider;
+import model.botAlgorithm.IGameAlgorithm;
+import model.game.kalaha.Kalaha;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UserVsComputerController extends ComputerGameController {
+    private static final int MIN_COMPUTER_THINKING_TIME = 800;
     private boolean moveIsDone = true;
 
     @Override
@@ -35,7 +39,7 @@ public class UserVsComputerController extends ComputerGameController {
     public void moveStones(int indexOfHole) {
         if (moveIsDone) {
             super.moveStones(indexOfHole);
-            if (whichPlayer == 1) {
+            if (playerNumber == 1) {
                 moveIsDone = false;
                 Thread enemyMoveThread = new Thread(this::enemyMove);
                 enemyMoveThread.start();
@@ -44,13 +48,13 @@ public class UserVsComputerController extends ComputerGameController {
     }
 
     private void glowingEffectForPlayer(Circle circle) {
-        if (whichPlayer == 0) {
+        if (playerNumber == 0) {
             enableGlowingEffect(circle);
         }
     }
 
     private void disableGlowingEffect(Circle circle) {
-        if (whichPlayer == 0 || whichPlayer == 1) {
+        if (playerNumber == 0 || playerNumber == 1) {
             DropShadow zeroGlow = new DropShadow();
             zeroGlow.setOffsetX(0f);
             zeroGlow.setOffsetY(0f);
@@ -70,14 +74,15 @@ public class UserVsComputerController extends ComputerGameController {
             disableGlowingEffect(circle);
         }
 
-        DecisionTree decisionTree = new DecisionTree(kalaha, whichPlayer, treeDepth);
+        IGameAlgorithm<Kalaha> algorithm = AlgorithmProvider.getAlgorithm();
+        algorithm.setDifficultyLevel(difficultyLevel);
 
         long startTime = System.currentTimeMillis();
         long currentTime;
-        final int indexOfHole = decisionTree.findBestWay() + 6;
+        final int indexOfHole = algorithm.findBestWay(kalaha, playerNumber) + 6;
         do {
             currentTime = System.currentTimeMillis() - startTime;
-        } while (currentTime < 777);
+        } while (currentTime < MIN_COMPUTER_THINKING_TIME);
 
         enableGlowingEffect(secondPlayerHoles.get(indexOfHole - 7));
         moveIsDone = true;

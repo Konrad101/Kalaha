@@ -1,8 +1,8 @@
 package controllers;
 
-import controllers.gameOptions.ComputerGameController;
-import controllers.gameOptions.ComputerVsComputerController;
-import controllers.gameOptions.Game;
+import controllers.gameControllers.ComputerGameController;
+import controllers.gameControllers.gameTypesControllers.ComputerVsComputerController;
+import controllers.gameControllers.IGameController;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.botAlgorithm.DifficultyLevel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -161,18 +162,20 @@ public class MenuController implements Initializable {
 
 
             if (optionNumber == 1 || optionNumber == 2) {
-                int depth = 6;
+                DifficultyLevel difficulty;
                 if (difficultyLevel == 1) {
-                    depth = 4;
-                } else if (difficultyLevel == 3) {
-                    depth = 8;
+                    difficulty = DifficultyLevel.EASY;
+                } else if (difficultyLevel == 2) {
+                    difficulty = DifficultyLevel.MEDIUM;
+                } else {
+                    difficulty = DifficultyLevel.HARD;
                 }
                 ComputerGameController controller = loader.getController();
-                controller.setTreeDepth(depth);
+                controller.setDifficulty(difficulty);
                 controller.setStonesAmount(stones);
                 controller.createStones();
             } else {
-                Game controller = loader.getController();
+                IGameController controller = loader.getController();
                 controller.setStonesAmount(stones);
                 controller.createStones();
             }

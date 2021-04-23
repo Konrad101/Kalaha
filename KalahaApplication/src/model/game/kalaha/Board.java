@@ -1,9 +1,9 @@
-package model;
+package model.game.kalaha;
 
-class Board {
-    private int[] board;
+public class Board {
+    private final int[] board;
 
-    Board() {
+    public Board() {
         board = new int[14];
     }
 
@@ -16,6 +16,10 @@ class Board {
         return board;
     }
 
+    int getOnePlayerHolesAmount(){
+        return (board.length - 2) / 2;
+    }
+
     void initBoard(int stonesInHole) {
         for (int i = 0; i < board.length; i++) {
             if (i != 6 && i != 13) {
@@ -24,6 +28,27 @@ class Board {
                 board[i] = 0;
             }
         }
+    }
+
+    void printBoard() {
+        System.out.println();
+
+        // first  player base on  6 index
+        // second player base on 13 index
+        int index = board.length - 2;
+        for (int i = 0; i < 6; i++) {
+            System.out.print("\t" + board[index]);
+            index--;
+        }
+
+        System.out.println("\n" + board[board.length - 1] + "\t\t\t\t\t\t\t" + board[index]);
+        index = 0;
+
+        for (int i = 0; i < 6; i++) {
+            System.out.print("\t" + board[index]);
+            index++;
+        }
+        System.out.println();
     }
 
     boolean checkStopCondition() {
@@ -105,16 +130,13 @@ class Board {
             if (lastHoleIndex == (board.length / 2) - 1 ) {
                 return 1;
             }
-
             if (lastHoleIndex < 6 && board[lastHoleIndex] == 0 && board[opponentHoleIndex(lastHoleIndex)] != 0) {
                 return 2;
             }
         } else {
             if (lastHoleIndex == board.length - 1) {
-
                 return 1;
             }
-
             if (lastHoleIndex > 6 && board[lastHoleIndex] == 0 && board[opponentHoleIndex(lastHoleIndex)] != 0) {
                 return 2;
             }
@@ -241,11 +263,11 @@ class Board {
     }
 
     /**
-     * @return -1  when game isn't over
-     *
-     * @return 0  when first player won
-     * @return 1  when second player won
-     * @return 2  when draw */
+     * @return current game status code
+     * -1  when game isn't over
+     *  0  when first player won
+     *  1  when second player won
+     *  2  when draw */
     int whichPlayerWon() {
         // both of players must have 0 stones in holes
         if (!checkStopCondition())

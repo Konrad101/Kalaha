@@ -1,7 +1,7 @@
-package controllers.gameOptions;
+package controllers.gameControllers;
 
 import controllers.MenuController;
-import model.Kalaha;
+import model.game.kalaha.Kalaha;
 import view.AnchorValues;
 import view.Stone;
 import javafx.event.ActionEvent;
@@ -31,13 +31,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public abstract class GameController implements Initializable, Game {
+public abstract class GameController implements Initializable, IGameController {
     public GridPane boardGridLayout;
     public Button menuButton;
     public Button resetButton;
 
     public VBox middleVBox;
-    private Text kalahaText;
+    private Text gameNameText;
 
     public Circle secondPlayerCircle;
     public Circle firstPlayerCircle;
@@ -60,7 +60,7 @@ public abstract class GameController implements Initializable, Game {
     public AnchorPane fifthPaneSecondPlayer;
     public AnchorPane sixthPaneSecondPlayer;
 
-    ArrayList<Circle> firstPlayerHoles = new ArrayList<>(6);
+    protected ArrayList<Circle> firstPlayerHoles = new ArrayList<>(6);
     public Circle firstHoleFirstPlayer;
     public Circle secondHoleFirstPlayer;
     public Circle thirdHoleFirstPlayer;
@@ -68,7 +68,7 @@ public abstract class GameController implements Initializable, Game {
     public Circle fifthHoleFirstPlayer;
     public Circle sixthHoleFirstPlayer;
 
-    ArrayList<Circle> secondPlayerHoles = new ArrayList<>(6);
+    protected ArrayList<Circle> secondPlayerHoles = new ArrayList<>(6);
     public Circle firstHoleSecondPlayer;
     public Circle secondHoleSecondPlayer;
     public Circle thirdHoleSecondPlayer;
@@ -83,8 +83,8 @@ public abstract class GameController implements Initializable, Game {
     private int menuStonesAmount;
     private boolean gameStarted = false;
 
-    Kalaha kalaha;
-    int whichPlayer;
+    protected Kalaha kalaha;
+    protected int playerNumber;
 
     @Override
     public void setStonesAmount(int stonesAmount) {
@@ -97,11 +97,11 @@ public abstract class GameController implements Initializable, Game {
         setGlowingEffectOnButton(menuButton, 10, 10);
         setGlowingEffectOnButton(resetButton, 10, 10);
         setGlowingEffectsOnButtons();
-        setKalahaText();
+        setGameNameText();
 
-        whichPlayer = 0;
-        addHolesToContainer();
-        addAnchorPanesToContainer();
+        playerNumber = 0;
+        addHolesToList();
+        addAnchorPanesToList();
         addStonesAmountText();
     }
 
@@ -148,13 +148,13 @@ public abstract class GameController implements Initializable, Game {
         updateStonesAmountOnText();
     }
 
-    private void setKalahaText() {
-        kalahaText = new Text("Kalaha");
-        kalahaText.setFont(new Font(45));
-        kalahaText.setFill(new Color(0.75, 0.55, 0.34, 1));
+    private void setGameNameText() {
+        gameNameText = new Text("Kalaha");
+        gameNameText.setFont(new Font(45));
+        gameNameText.setFill(new Color(0.75, 0.55, 0.34, 1));
 
-        VBox.setMargin(kalahaText, new Insets(16.8, 0, 0, 33));
-        middleVBox.getChildren().add(kalahaText);
+        VBox.setMargin(gameNameText, new Insets(16.8, 0, 0, 33));
+        middleVBox.getChildren().add(gameNameText);
     }
 
     private void addStonesToHole(AnchorPane anchorPane, int firstStonesIndex) {
@@ -248,11 +248,10 @@ public abstract class GameController implements Initializable, Game {
         System.gc();
 
         window.setScene(menuScene);
-        //window.centerOnScreen();
         window.show();
     }
 
-    void resetGame(ActionEvent event, int gameOption) {
+    protected void resetGame(ActionEvent event, int gameOption) {
         if (gameStarted) {
             String url;
             if (gameOption == 1) {
@@ -289,7 +288,7 @@ public abstract class GameController implements Initializable, Game {
         }
     }
 
-    void setGlowingEffectOnButton(Button button, double width, double height) {
+    protected void setGlowingEffectOnButton(Button button, double width, double height) {
         DropShadow borderGlow = new DropShadow();
         borderGlow.setColor(new Color(0.75, 0.55, 0.34, 1));
         borderGlow.setOffsetX(0f);
@@ -310,15 +309,12 @@ public abstract class GameController implements Initializable, Game {
             playerNum = 1;
         }
 
-        if (playerNum == whichPlayer) {
+        if (playerNum == playerNumber) {
             gameStarted = true;
             int holeNum;
 
-
             holeNum = numberOfHoleForIndex(indexOfHole);
-
             int result = kalaha.move(holeNum, playerNum);
-
             if (result != -1) {
                 int boardLength = kalaha.getBoard().length;
 
@@ -330,18 +326,15 @@ public abstract class GameController implements Initializable, Game {
                 }
 
                 int index = indexOfHole + 1;
-
                 for (Stone stone : stones) {
                     if (stone.getCurrentHole() == indexOfHole) {
                         for (AnchorPane pane : anchorPanes) {
                             pane.getChildren().remove(stone);
                         }
 
-
                         if (index == indexOfOpponentBase) {
                             index++;
                         }
-
                         if (index == boardLength) {
                             index = 0;
                         }
@@ -366,7 +359,7 @@ public abstract class GameController implements Initializable, Game {
                 }
 
                 if (result == 2) {
-                    // steal your and opponent's stones to your base (whichPlayer before change)
+                    // steal your and opponent's stones to your base (playerNumber before change)
                     int lastHoleIndex = kalaha.getLastHoleIndex();
                     int opponentHoleIndex;
 
@@ -413,11 +406,11 @@ public abstract class GameController implements Initializable, Game {
                     enableGlowingEffect(circle);
                 }
 
-                whichPlayer = 2;
+                playerNumber = 2;
             } else {
                 if (result != 1 && result != -1) {
-                    whichPlayer = (playerNum + 1) % 2;
-                    changeEffectOnPlayerCircle(whichPlayer);
+                    playerNumber = (playerNum + 1) % 2;
+                    changeEffectOnPlayerCircle(playerNumber);
                 }
             }
         }
@@ -465,7 +458,7 @@ public abstract class GameController implements Initializable, Game {
         return (index % 7) + 1;
     }
 
-    void enableGlowingEffect(Circle circle) {
+    protected void enableGlowingEffect(Circle circle) {
         DropShadow borderGlow = new DropShadow();
         borderGlow.setColor(Color.GOLDENROD);
         borderGlow.setOffsetX(0f);
@@ -507,7 +500,7 @@ public abstract class GameController implements Initializable, Game {
     private void setWinnerText(int winnerNumber) {
         if (winnerNumber == 0 || winnerNumber == 1) {
             winnerNumber++;
-            middleVBox.getChildren().remove(kalahaText);
+            middleVBox.getChildren().remove(gameNameText);
             Font font = new Font("Yu Gothic Light", 34);
             Color color = new Color(0.75, 0.55, 0.34, 1);
 
@@ -525,9 +518,9 @@ public abstract class GameController implements Initializable, Game {
             middleVBox.getChildren().add(playerText);
             middleVBox.getChildren().add(wonText);
         } else {
-            kalahaText.setText("Draw!");
-            kalahaText.setFont(new Font("Yu Gothic Light", 55));
-            VBox.setMargin(kalahaText, new Insets(20, 0, 0, 29.7));
+            gameNameText.setText("Draw!");
+            gameNameText.setFont(new Font("Yu Gothic Light", 55));
+            VBox.setMargin(gameNameText, new Insets(20, 0, 0, 29.7));
         }
     }
 
@@ -553,7 +546,7 @@ public abstract class GameController implements Initializable, Game {
         }
     }
 
-    private void addHolesToContainer() {
+    private void addHolesToList() {
         firstPlayerHoles.add(firstHoleFirstPlayer);
         firstPlayerHoles.add(secondHoleFirstPlayer);
         firstPlayerHoles.add(thirdHoleFirstPlayer);
@@ -569,7 +562,7 @@ public abstract class GameController implements Initializable, Game {
         secondPlayerHoles.add(sixthHoleSecondPlayer);
     }
 
-    private void addAnchorPanesToContainer() {
+    private void addAnchorPanesToList() {
         anchorPanes.add(firstPaneFirstPlayer);
         anchorPanes.add(secondPaneFirstPlayer);
         anchorPanes.add(thirdPaneFirstPlayer);

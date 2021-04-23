@@ -1,4 +1,4 @@
-package model.DecisionTree;
+package model.botAlgorithm.decisionTree;
 
 public class BranchThread implements Runnable {
     private Node root;

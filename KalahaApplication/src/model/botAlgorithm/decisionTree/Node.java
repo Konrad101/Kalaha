@@ -1,17 +1,17 @@
-package model.DecisionTree;
+package model.botAlgorithm.decisionTree;
 
-import model.Kalaha;
+import model.game.kalaha.Kalaha;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
 class Node {
-    private int startHole;
+    private final int startHole;
     private int originalPlayer;
-    private int whichPlayer;
-    private int depth;
+    private final int whichPlayer;
+    private final int depth;
     private int collectedStones;
-    private ArrayList<Node> children;
+    private final ArrayList<Node> children;
     public Kalaha currentKalaha;
     final int MAX_DEPTH;
 
@@ -51,13 +51,13 @@ class Node {
         return children;
     }
 
-    ArrayList<Node> getAllLeafs(Node node){
+    ArrayList<Node> getAllLeaves(Node node){
         ArrayList<Node> leafs = new ArrayList<>();
         if(node.children.isEmpty()){
             leafs.add(node);
         }else{
             for(Node child: node.children){
-                leafs.addAll(getAllLeafs(child));
+                leafs.addAll(getAllLeaves(child));
             }
         }
 
@@ -98,7 +98,7 @@ class Node {
         }
     }
 
-    int createBranches(){
+    void createBranches(){
         int holesAmount = (currentKalaha.getBoard().length / 2) - 1;
 
         //only for root's children
@@ -115,11 +115,6 @@ class Node {
         while(!executorService.isTerminated() && waitingTime < 30000){
             waitingTime = System.currentTimeMillis() - startTime;
         }
-
-        if(waitingTime > 30000)
-            return -1;
-
-        return 0;
     }
 
     /**

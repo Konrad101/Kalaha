@@ -1,22 +1,25 @@
-package controllers.gameOptions;
+package controllers.gameControllers.gameTypesControllers;
 
-import model.DecisionTree.DecisionTree;
+import controllers.gameControllers.ComputerGameController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.shape.Circle;
-
+import model.botAlgorithm.AlgorithmProvider;
+import model.botAlgorithm.IGameAlgorithm;
+import model.game.kalaha.Kalaha;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ComputerVsComputerController extends ComputerGameController {
+    private final static int MIN_THINKING_TIME = 500;
     public Button startGameButton;
 
     private boolean startGameActivated = false;
-    private boolean closedStage        = false;
+    private boolean closedStage = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -30,12 +33,12 @@ public class ComputerVsComputerController extends ComputerGameController {
     }
 
     public void decreaseGlowingEffect() {
-        if(!startGameActivated) {
+        if (!startGameActivated) {
             setGlowingEffectOnButton(startGameButton, 10, 10);
         }
     }
 
-    public void setClosedStage(boolean closedStage){
+    public void setClosedStage(boolean closedStage) {
         this.closedStage = closedStage;
     }
 
@@ -43,7 +46,7 @@ public class ComputerVsComputerController extends ComputerGameController {
     public void moveStones(int indexOfHole) {
         super.moveStones(indexOfHole);
 
-        if(!kalaha.checkStopCondition()) {
+        if (!kalaha.checkStopCondition()) {
             Circle circleEffect;
             if (indexOfHole < 6) {
                 circleEffect = firstPlayerHoles.get(indexOfHole);
@@ -63,25 +66,24 @@ public class ComputerVsComputerController extends ComputerGameController {
     }
 
     @Override
-    void resetGame(ActionEvent event, int gameOption) {
+    protected void resetGame(ActionEvent event, int gameOption) {
         super.resetGame(event, gameOption);
         closedStage = true;
     }
 
-    private void disableGlowingEffect(){
+    private void disableGlowingEffect() {
         DropShadow zeroGlow = new DropShadow();
         zeroGlow.setWidth(0);
         zeroGlow.setHeight(0);
 
-        for(Circle circle: firstPlayerHoles){
+        for (Circle circle : firstPlayerHoles) {
             circle.setEffect(zeroGlow);
         }
-        for(Circle circle: secondPlayerHoles){
+        for (Circle circle : secondPlayerHoles) {
             circle.setEffect(zeroGlow);
         }
     }
 
-    // Threads
     public void startGame() {
         if (!startGameActivated) {
             startGameActivated = true;
@@ -91,7 +93,7 @@ public class ComputerVsComputerController extends ComputerGameController {
     }
 
     private void play() {
-        DecisionTree decisionTree;
+        IGameAlgorithm<Kalaha> algorithm;
         int holeIndex;
         int holeNum;
 
@@ -100,10 +102,11 @@ public class ComputerVsComputerController extends ComputerGameController {
 
         while (!kalaha.checkStopCondition() && !closedStage) {
             startTime = System.currentTimeMillis();
-            decisionTree = new DecisionTree(kalaha, whichPlayer, treeDepth);
+            algorithm = AlgorithmProvider.getAlgorithm();
+            algorithm.setDifficultyLevel(difficultyLevel);
 
-            holeNum = decisionTree.findBestWay();
-            if (whichPlayer == 0) {
+            holeNum = algorithm.findBestWay(kalaha, playerNumber);
+            if (playerNumber == 0) {
                 holeIndex = holeNum - 1;
 
             } else {
@@ -115,7 +118,7 @@ public class ComputerVsComputerController extends ComputerGameController {
 
             do {
                 currentTime = System.currentTimeMillis() - startTime;
-            } while (currentTime < 500);
+            } while (currentTime < MIN_THINKING_TIME);
         }
     }
 }

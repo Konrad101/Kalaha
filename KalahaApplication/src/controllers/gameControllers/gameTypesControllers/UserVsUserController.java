@@ -1,5 +1,6 @@
-package controllers.gameOptions;
+package controllers.gameControllers.gameTypesControllers;
 
+import controllers.gameControllers.GameController;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.shape.Circle;
 
@@ -42,13 +43,13 @@ public class UserVsUserController extends GameController {
     }
 
     private void glowingEffectForPlayer(Circle circle, int playerHole){
-        if(playerHole == whichPlayer) {
+        if(playerHole == playerNumber) {
             enableGlowingEffect(circle);
         }
     }
 
     private void disableGlowingEffect(Circle circle){
-        if(whichPlayer == 0 || whichPlayer == 1) {
+        if(playerNumber == 0 || playerNumber == 1) {
             DropShadow zeroGlow = new DropShadow();
             zeroGlow.setOffsetX(0f);
             zeroGlow.setOffsetY(0f);

@@ -1,6 +1,6 @@
-package controllers.gameOptions;
+package controllers.gameControllers;
 
-public interface Game {
+public interface IGameController {
     void setStonesAmount(int stonesAmount);
     void createStones();
     void moveStones(int indexOfHole);
