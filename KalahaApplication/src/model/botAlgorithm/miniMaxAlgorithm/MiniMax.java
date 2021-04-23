@@ -28,7 +28,7 @@ public class MiniMax<T extends IGame<T> & IEvaluate> implements IGameAlgorithm<T
     @Override
     public int findBestWay(T initialPosition, int playerNumber) {
         if(initialPosition.isFirstMove()){
-            return 1 + new Random().nextInt(6);
+            return 1 + new Random().nextInt(initialPosition.getFieldsAmount());
         }
 
         this.playerNumber = playerNumber;

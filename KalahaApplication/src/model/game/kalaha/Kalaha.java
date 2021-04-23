@@ -99,6 +99,11 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
         return lastMoveHoleNumber;
     }
 
+    @Override
+    public int getFieldsAmount() {
+        return board.getOnePlayerHolesAmount();
+    }
+
     /**
      * @param holeNum     needs to be [1, 6]
      * @param whichPlayer needs to be 0 or 1
