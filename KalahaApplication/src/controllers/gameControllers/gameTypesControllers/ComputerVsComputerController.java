@@ -46,7 +46,7 @@ public class ComputerVsComputerController extends ComputerGameController {
     public void moveStones(int indexOfHole) {
         super.moveStones(indexOfHole);
 
-        if (!kalaha.checkStopCondition()) {
+        if (!kalaha.gameOver()) {
             Circle circleEffect;
             if (indexOfHole < 6) {
                 circleEffect = firstPlayerHoles.get(indexOfHole);
@@ -100,7 +100,7 @@ public class ComputerVsComputerController extends ComputerGameController {
         long startTime;
         long currentTime;
 
-        while (!kalaha.checkStopCondition() && !closedStage) {
+        while (!kalaha.gameOver() && !closedStage) {
             startTime = System.currentTimeMillis();
             algorithm = AlgorithmProvider.getAlgorithm();
             algorithm.setDifficultyLevel(difficultyLevel);
@@ -108,7 +108,6 @@ public class ComputerVsComputerController extends ComputerGameController {
             holeNum = algorithm.findBestWay(kalaha, playerNumber);
             if (playerNumber == 0) {
                 holeIndex = holeNum - 1;
-
             } else {
                 holeIndex = holeNum + 6;
             }

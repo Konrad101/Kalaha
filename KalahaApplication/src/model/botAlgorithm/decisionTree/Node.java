@@ -71,7 +71,7 @@ class Node {
 
             int result = childKalaha.move(i + 1, node.whichPlayer);
 
-            if (childKalaha.checkStopCondition()) {
+            if (childKalaha.gameOver()) {
                 childKalaha.collectRestOfStones();
             }
 

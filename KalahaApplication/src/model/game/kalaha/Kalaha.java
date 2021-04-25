@@ -44,10 +44,6 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
         board.printBoard();
     }
 
-    public boolean checkStopCondition() {
-        return board.checkStopCondition();
-    }
-
     public void collectRestOfStones() {
         board.collectRestOfStones();
     }
@@ -90,8 +86,8 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
         return getStonesAmount((whichPlayer + 1) % 2);
     }
 
-    public int getLastMoveResult() {
-        return lastMoveResult;
+    public boolean extraPlayerMove() {
+        return lastMoveResult == 1;
     }
 
     @Override
@@ -122,7 +118,6 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
         int condition = board.checkLastHoleConditions(holeNum, whichPlayer);
 
         if (condition < 0) {
-//            printLastHoleConditionResult(condition);
             return -1;
         }
 
@@ -138,19 +133,6 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
         }
 
         return 0;
-    }
-
-    private void printLastHoleConditionResult(int condition) {
-        System.out.print("Wrong argument -");
-        if (condition == -1) {
-            System.out.println(" number of hole.");
-        } else {
-            if (condition == -2) {
-                System.out.println(" player number.");
-            } else {
-                System.out.println(" hole is empty.");
-            }
-        }
     }
 
     /**
@@ -170,7 +152,7 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
 
     @Override
     public boolean gameOver() {
-        return this.checkStopCondition();
+        return board.checkStopCondition();
     }
 
     @Override

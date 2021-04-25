@@ -50,9 +50,8 @@ public class MiniMax<T extends IGame<T> & IEvaluate> implements IGameAlgorithm<T
 
         int currentPlayerNumber = maximizingPlayer ? playerNumber : (playerNumber + 1) % 2;
         for (T child : position.getAllChildren(currentPlayerNumber)) {
-            boolean additionalMove = child.getLastMoveResult() == 1;
             int eval;
-            if (additionalMove) {
+            if (child.extraPlayerMove()) {
                 eval = minimax(child, depth, alpha, beta, maximizingPlayer);
             } else {
                 eval = minimax(child, depth - 1, alpha, beta, !maximizingPlayer);
