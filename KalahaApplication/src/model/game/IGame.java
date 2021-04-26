@@ -6,7 +6,7 @@ public interface IGame<T> {
     boolean extraPlayerMove();
     int getLastMoveNumber();
     int getFieldsAmount();
-    boolean gameOver();
+    boolean gameOver(int playerNumber);
     boolean isFirstMove();
     List<T> getAllChildren(int playerNumber);
 }

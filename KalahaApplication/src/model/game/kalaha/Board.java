@@ -51,24 +51,19 @@ public class Board {
         System.out.println();
     }
 
-    boolean checkStopCondition() {
-        int index;
-        boolean emptyFirstPlayerHoles = true;
-        boolean emptySecondPlayerHoles = true;
+    boolean checkStopCondition(int playerNumber) {
+        boolean emptyPlayerHoles = true;
 
-        index = 0;
-        for (int j = 0; j < 6; j++) {
+        int index = playerNumber == 0 ? 0 : this.getOnePlayerHolesAmount() + 1;
+        for (int j = 0; j < getOnePlayerHolesAmount(); j++) {
             if (board[index] != 0) {
-                emptyFirstPlayerHoles = false;
+                emptyPlayerHoles = false;
             }
 
-            if (board[index + 7] != 0) {
-                emptySecondPlayerHoles = false;
-            }
             index++;
         }
 
-        return emptyFirstPlayerHoles || emptySecondPlayerHoles;
+        return emptyPlayerHoles;
     }
 
     /**
@@ -270,7 +265,7 @@ public class Board {
      *  2  when draw */
     int whichPlayerWon() {
         // both of players must have 0 stones in holes
-        if (!checkStopCondition())
+        if (!boardHolesAreEmpty())
             return -1;
 
         if (board[6] > board[board.length - 1]) {
@@ -281,5 +276,19 @@ public class Board {
         }
 
         return 2;
+    }
+
+    boolean boardHolesAreEmpty(){
+        int holeIndex = 0;
+        while (holeIndex != board.length - 1){
+            if(holeIndex == getOnePlayerHolesAmount()){
+                holeIndex++;
+            }
+            if(board[holeIndex++] != 0){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

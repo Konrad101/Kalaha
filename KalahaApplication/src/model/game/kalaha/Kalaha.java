@@ -86,6 +86,7 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
         return getStonesAmount((whichPlayer + 1) % 2);
     }
 
+    @Override
     public boolean extraPlayerMove() {
         return lastMoveResult == 1;
     }
@@ -151,8 +152,8 @@ public class Kalaha implements IEvaluate, IGame<Kalaha> {
     }
 
     @Override
-    public boolean gameOver() {
-        return board.checkStopCondition();
+    public boolean gameOver(int playerNumber) {
+        return board.checkStopCondition(playerNumber);
     }
 
     @Override

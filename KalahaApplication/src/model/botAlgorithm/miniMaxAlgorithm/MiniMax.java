@@ -42,13 +42,12 @@ public class MiniMax<T extends IGame<T> & IEvaluate> implements IGameAlgorithm<T
     }
 
     private int minimax(T position, int depth, int alpha, int beta, boolean maximizingPlayer) {
-        if (depth == 0 || position.gameOver()) {
+        int currentPlayerNumber = maximizingPlayer ? playerNumber : (playerNumber + 1) % 2;
+        if (depth == 0 || position.gameOver(currentPlayerNumber)) {
             return position.evaluate(playerNumber);
         }
 
         int evaluation = maximizingPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-
-        int currentPlayerNumber = maximizingPlayer ? playerNumber : (playerNumber + 1) % 2;
         for (T child : position.getAllChildren(currentPlayerNumber)) {
             int eval;
             if (child.extraPlayerMove()) {

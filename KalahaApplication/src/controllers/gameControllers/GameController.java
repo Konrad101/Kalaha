@@ -390,7 +390,8 @@ public abstract class GameController implements Initializable, IGameController {
                 updateStonesAmountOnText();
             }
 
-            if (kalaha.gameOver()) {
+            int nextMovePlayerNumber = kalaha.extraPlayerMove() ? playerNumber : (playerNumber + 1) % 2;
+            if (kalaha.gameOver(nextMovePlayerNumber)) {
                 kalaha.collectRestOfStones();
                 collectSecondPlayerStones();
                 collectFirstPlayerStones();

@@ -70,8 +70,8 @@ class Node {
             Kalaha childKalaha = new Kalaha(node.currentKalaha);
 
             int result = childKalaha.move(i + 1, node.whichPlayer);
-
-            if (childKalaha.gameOver()) {
+            int nextMovePlayerNumber = childKalaha.extraPlayerMove() ? node.whichPlayer : (node.whichPlayer + 1) % 2;
+            if (childKalaha.gameOver(nextMovePlayerNumber)) {
                 childKalaha.collectRestOfStones();
             }
 
